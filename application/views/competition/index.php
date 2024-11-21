@@ -21,18 +21,19 @@
             <h4 class="card-title">Penilaian Kompetisi 5K2S</h4>
           </div>
           <div class="card-body">
-            <a class="btn btn-primary" href="<?php echo base_url('competition/tambah'); ?>">Tambah Penilaian</a>
+            <a class="btn btn-primary" href="<?php echo base_url('competition/pilih_kls'); ?>">Tambah Penilaian</a>
             <table id="tableCompetition" class="table table-bootstrap"> 
               <thead >
                 <tr>
                   <th rowspan="2" class="text-center thStyle" >No</th>
                   <th rowspan="2" class="text-center thStyle" >Tanggal</th>
-                  <th rowspan="2" class="text-center thStyle" style="vertical-align: middle;">Kelas</th>
-                  <th colspan="3" class="text-center thStyle">Poin</th>
+                  <th rowspan="2" class="text-center thStyle" >Kelas</th>
+                  <th colspan="4" class="text-center thStyle">Poin</th>
                   <th rowspan="2" class="text-center thStyle" >Total</th>
                 </tr>
                 <tr>
                   <th class="text-center thStyle">Kerapihan</th>
+                  <th class="text-center thStyle">Keamanan</th>
                   <th class="text-center thStyle">Ketertiban dan Kedisiplinan</th>
                   <th class="text-center thStyle">Kebersihan</th>
                 </tr>
@@ -43,18 +44,20 @@
                   <td class="text-center" style="font-size: 14px;">7 November 2024</td>
                   <td class="text-center" style="font-size: 14px;">1 A</td>
                   <td class="text-center" style="font-size: 14px;">5</td>
+                  <td class="text-center" style="font-size: 14px;">1</td>
                   <td class="text-center" style="font-size: 14px;">4</td>
                   <td class="text-center" style="font-size: 14px;">10</td>
-                  <td class="text-center" style="font-size: 14px;">19</td>
+                  <td class="text-center" style="font-size: 14px;">20</td>
                 </tr>
                 <tr>
                   <td class="text-center" style="font-size: 14px;">2</td>
                   <td class="text-center" style="font-size: 14px;">3 November 2024</td>
                   <td class="text-center" style="font-size: 14px;">1 B</td>
                   <td class="text-center" style="font-size: 14px;">3</td>
+                  <td class="text-center" style="font-size: 14px;">3</td>
                   <td class="text-center" style="font-size: 14px;">4</td>
                   <td class="text-center" style="font-size: 14px;">8</td>
-                  <td class="text-center" style="font-size: 14px;">15</td>
+                  <td class="text-center" style="font-size: 14px;">18</td>
                 </tr>
               </tbody>
             </table>

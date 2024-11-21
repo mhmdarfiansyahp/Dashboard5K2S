@@ -1,3 +1,14 @@
+<style>
+  .card-body {
+    max-height: 600px;
+    /* Batasi tinggi maksimal */
+    overflow-y: auto;
+    /* Tambahkan scrollbar vertikal */
+    overflow-x: hidden;
+
+  }
+</style>
+
 <!-- partial -->
 <div class="main-panel">
   <div class="content-wrapper pb-0">
@@ -25,20 +36,123 @@
             <br>
             <h6>Kerapihan letak properti Lab</h6>
             <br>
-            <input type="radio" class="" value="5"> [5] Semua properti diletakkan pada tempat yang seharusnya dan Rapi
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="5">
+              [5 Point] Semua properti diletakkan pada tempat yang seharusnya dan Rapi
+            </label>
             <br>
-            <input type="radio" value="4"> [4] Sebagian besar properti diletakkan pada tempat yang seharusnya dan Rapi
             <br>
-            <input type="radio" value="3"> [3] Sebagian besar properti diletakkan pada tempat yang seharusnya dan Tidak Rapi
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="4">
+              [4 Point] Sebagian besar properti diletakkan pada tempat yang seharusnya dan Rapi
+            </label>
             <br>
-            <input type="radio" value="2"> [2] Beberapa properti diletakkan pada tempat yang seharusnya dan Rapi
             <br>
-            <input type="radio" value="1"> [1] Beberapa properti diletakkan pada tempat yang seharusnya dan Tidak Rapi
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="3">
+              [3 Point] Sebagian besar properti diletakkan pada tempat yang seharusnya dan Tidak Rapi
+            </label>
             <br>
-            <input type="radio" value="0"> [0] Properti diletakkan tidak pada tempat yang seharusnya dan tidak Rapi
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="2">
+              [2 Point] Beberapa properti diletakkan pada tempat yang seharusnya dan Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="1">
+              [1 Point] Beberapa properti diletakkan pada tempat yang seharusnya dan Tidak Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="0">
+              [0 Point] Properti diletakkan tidak pada tempat yang seharusnya dan tidak Rapi
+            </label>
+
+            <br>
+            <br>
+            <br>
+            <h6>Kerapihan atribut yang digunakan pengguna Lab</h6>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="5">
+              [5 Point] Semua properti diletakkan pada tempat yang seharusnya dan Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="4">
+              [4 Point] Sebagian besar properti diletakkan pada tempat yang seharusnya dan Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="3">
+              [3 Point] Sebagian besar properti diletakkan pada tempat yang seharusnya dan Tidak Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="2">
+              [2 Point] Beberapa properti diletakkan pada tempat yang seharusnya dan Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="1">
+              [1 Point] Beberapa properti diletakkan pada tempat yang seharusnya dan Tidak Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="0">
+              [0 Point] Properti diletakkan tidak pada tempat yang seharusnya dan tidak Rapi
+            </label>
+
+            <br>
+            <br>
+            <br>
+            <h6>Kerapihan Rambut dan Seragam pengguna Lab</h6>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="5">
+              [5 Point] Semua properti diletakkan pada tempat yang seharusnya dan Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="4">
+              [4 Point] Sebagian besar properti diletakkan pada tempat yang seharusnya dan Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="3">
+              [3 Point] Sebagian besar properti diletakkan pada tempat yang seharusnya dan Tidak Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="2">
+              [2 Point] Beberapa properti diletakkan pada tempat yang seharusnya dan Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="1">
+              [1 Point] Beberapa properti diletakkan pada tempat yang seharusnya dan Tidak Rapi
+            </label>
+            <br>
+            <br>
+            <label style="font-size: 16px;">
+              <input type="radio" name="kerapihan_lab" value="0">
+              [0 Point] Properti diletakkan tidak pada tempat yang seharusnya dan tidak Rapi
+            </label>
           </div>
           <div class="card-footer d-flex justify-content-between">
-            <button class="btn btn-warning">Sebelumnya</button>
+            <a class="btn btn-warning" href="<?php echo base_url('competition/pilih_kls'); ?>">Kembali</a>
             <button class="btn btn-primary ms-auto">Selanjutnya</button>
           </div>
         </div>
