@@ -60,8 +60,22 @@ $route['competition'] = 'Dashboard/competition';
 
 $route['class'] = 'Dashboard/myclass';
 
-$route['competition/tambah'] = 'Kompetisi/tambah';
-$route['competition/pilih_kls'] = 'Kompetisi/pilih_kls';
+$route['competition/kerapihan_lab'] = 'Kompetisi/kerapihan_lab';
+$route['competition/keamanan_lab'] = 'Kompetisi/keamanan_lab';
+$route['competition/ketertiban_lab'] = 'Kompetisi/ketertiban_lab';
+$route['competition/kebersihan_lab'] = 'Kompetisi/kebersihan_lab';
+
+$route['competition/kerapihan_lab_edit/edit/(:num)'] = 'Kompetisi/kerapihan_lab_edit/$1';  // Form Edit
+$route['competition/update_kerapihan_lab/(:num)'] = 'Kompetisi/update_kerapihan_lab/$1';
+$route['competition/keamanan_lab_edit/edit/(:num)'] = 'Kompetisi/keamanan_lab_edit/$1';  // Form Edit
+$route['competition/update_keamanan_lab/(:num)'] = 'Kompetisi/update_keamanan_lab/$1';
+$route['competition/ketertiban_lab_edit/edit/(:num)'] = 'Kompetisi/ketertiban_lab_edit/$1';  // Form Edit
+$route['competition/update_ketertiban_lab/(:num)'] = 'Kompetisi/update_ketertiban_lab/$1';
+$route['competition/kebersihan_lab_edit/edit/(:num)'] = 'Kompetisi/kebersihan_lab_edit/$1';  // Form Edit
+$route['competition/update_kebersihan_lab/(:num)'] = 'Kompetisi/update_kebersihan_lab/$1';
+
+
+
 
 
 
