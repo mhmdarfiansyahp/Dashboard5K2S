@@ -156,7 +156,7 @@ class Kalibrasi_m extends CI_Model
         $this->jadwal = $post["jadwal"];
         $this->masa_laku = $post["masa_laku"];
         $this->status = "Tersertifikasi";
-        $this->flag = $post["flag"];
+     //   $this->flag = $post["flag"];
         return $this->db->insert($this->_table, $this);
     }
 
@@ -171,7 +171,7 @@ class Kalibrasi_m extends CI_Model
         return $this->db->update('kalibrasi', $data); 
     }
 
-    public function delete($id)
+    public function delete($id,$data)
     {
         $this->db->where('id', $id);
        

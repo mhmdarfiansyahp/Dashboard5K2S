@@ -44,14 +44,15 @@
                                         <td class="text-center" style="font-size: 14px;"></td>
                                         <td class="text-center" style="font-size: 14px;"></td>
                                         <td>
-                                            <?php echo anchor(
-                                                'Kompetisi/tambah/' .$cpm->id_kelas,
-                                                '<div class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></div>'
-                                            ); ?>
-                                            <?php echo anchor(
-                                                'Kompetisi/edit/' . $cpm->id_kelas,
-                                                '<div class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></div>'
-                                            ); ?>
+                                        <?php echo anchor(
+                                            'Kompetisi/tambah/' . $cpm->id_kelas,
+                                            '<div class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></div>'
+                                        ); ?>
+                                        <?php echo anchor(
+                                            'Kompetisi/edit/' . $cpm->id_kelas,
+                                            '<div class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></div>'
+                                        ); ?>
+
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
