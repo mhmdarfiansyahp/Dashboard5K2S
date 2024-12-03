@@ -9,8 +9,10 @@
             <!--change to offline or busy as needed-->
           </div>
           <div class="nav-profile-text d-flex ml-0 mb-3 flex-column">
-            <span class="font-weight-semibold mb-1 mt-2 text-center">Candra Bagus K</span>
-            <span class="text-secondary icon-sm text-center">Koordinator 3B & 3D</span>
+              <!-- Menampilkan nama pengguna dari session -->
+              <span class="font-weight-semibold mb-1 mt-2 text-center"><?php echo $username; ?></span>
+              <!-- Menampilkan role pengguna dari session -->
+              <span class="text-secondary icon-sm text-center"><?php echo $role == 1 ? 'Admin' : 'Koordinator Kelas'; ?></span>
           </div>
         </a>
       </li>
@@ -176,11 +178,14 @@
         </ul>
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-logout d-none d-lg-block">
-            <a class="nav-link" href="index.html">
-              <i class="mdi mdi-home-circle"></i>
-            </a>
+              <?php echo anchor(
+                  'Dashboard/logout', 
+                  '<div class="btn btn-primary btn-sm"><i class="mdi mdi-logout"></i> Logout</div>',
+                  ['class' => 'nav-link']
+              ); ?>
           </li>
-        </ul>
+      </ul>
+
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="mdi mdi-menu"></span>
         </button>

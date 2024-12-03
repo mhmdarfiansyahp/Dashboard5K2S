@@ -50,13 +50,10 @@ use CodeIgniter\Router\RouteCollection;
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'Dashboard';
+$route['default_controller'] = 'login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-
 $route['dashboard'] = 'Dashboard/index';
-
-$route['competition'] = 'Dashboard/competition';
 
 $route['class'] = 'Dashboard/myclass';
 
@@ -74,8 +71,10 @@ $route['competition/update_ketertiban_lab/(:num)'] = 'Kompetisi/update_ketertiba
 $route['competition/kebersihan_lab_edit/edit/(:num)'] = 'Kompetisi/kebersihan_lab_edit/$1';  // Form Edit
 $route['competition/update_kebersihan_lab/(:num)'] = 'Kompetisi/update_kebersihan_lab/$1';
 
+$route['login'] = 'login/index';           
+$route['login/authenticate'] = 'login/authenticate';
+$route['dashboard/logout'] = 'Dashboard/logout';        
 
-
-
+$route['no_permission'] = 'no_permission/index';
 
 

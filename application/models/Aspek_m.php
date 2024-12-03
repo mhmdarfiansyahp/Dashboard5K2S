@@ -7,6 +7,12 @@ class Aspek_m extends CI_Model
         return $this->db->get('tb_aspek');
     }
 
+    public function GetDataByKelasId($id_kelas){
+        $this->db->where('id_kelas', $id_kelas);
+        $query = $this->db->get('tb_aspek');
+        return $query->result();
+    }
+
     public function tambah_data($data, $table)
     {
         $this->db->insert($table, $data);

@@ -4,6 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Kompetisi extends CI_Controller
 {
+    const ROLE_ADMIN = 1;
+    const ROLE_PIC_KELAS = 2;
     public function __construct()
     {
         parent::__construct();
@@ -11,6 +13,30 @@ class Kompetisi extends CI_Controller
         $this->load->model("Aspek_m");
     }
 
+    private function check_access()
+    {
+        // Cek apakah pengguna sudah login
+        if (!$this->session->userdata('user_id')) {
+            show_error('You must be logged in to access this page.', 403, 'Access Denied');
+            exit;  // Menghentikan eksekusi jika tidak login
+        }
+
+        // Ambil role dari session
+        $role = $this->session->userdata('role');
+        $method = $this->router->fetch_method(); // Ambil nama metode yang diakses
+
+        // Daftar metode yang diperbolehkan berdasarkan role
+        $allowed_methods = [
+            self::ROLE_ADMIN => ['index', 'tambah', 'pilih_kls'],
+            self::ROLE_PIC_KELAS => ['index', 'tambah', 'pilih_kls'],
+        ];
+
+        // Periksa apakah metode yang diakses sesuai dengan role
+         if (!in_array($method, $allowed_methods[$role])) {
+            $this->session->set_flashdata('error', 'You do not have permission to access this page.');
+            redirect('no_permission');
+        }
+    }
     public function index()
     {
 
@@ -313,5 +339,14 @@ class Kompetisi extends CI_Controller
         $this->db->update('tb_aspek', $data);
 
         redirect('competition');
+    }
+
+    private function prepare_user_data($title)
+    {
+        return [
+            'title' => $title,
+            'username' => $this->session->userdata('username'),
+            'role' => $this->session->userdata('role'),
+        ];
     }
 }
