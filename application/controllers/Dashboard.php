@@ -10,6 +10,8 @@ class Dashboard extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("Kelas_m");
+        $this->load->model("Aspek_m");
     }
 
     private function check_access()
@@ -51,10 +53,12 @@ class Dashboard extends CI_Controller
     public function competition()
     {
         $this->check_access();
-        $data = $this->prepare_user_data('Competition 5K2S');
+        $data['competisi'] = $this->Kelas_m->Getalldata()->result();
+        $data['aspek'] = $this->Aspek_m->Getalldata()->result();
+        // $data = $this->prepare_user_data('Competition 5K2S');
         $this->load->view("layout/header_dash", $data);
         $this->load->view("layout/sidebar_admin", $data);
-        $this->load->view("competition/index", $data);
+        $this->load->view("competition/index",$data);
         $this->load->view("layout/footer_dash");
     }
 

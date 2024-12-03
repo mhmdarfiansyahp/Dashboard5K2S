@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stylish Login Form</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
 
@@ -40,6 +41,70 @@
       box-shadow: 0px 0px 30px #5C5696;
       transform: scale(0.64); /* Mengurangi ukuran keseluruhan 20% dari sebelumnya */
     }
+
+    .screen_white {
+      background: white;   
+      position: relative;
+      margin-left: -180px;  
+      height: 720px;
+      width: 550px;  
+      box-shadow: 0px 0px 30px #5C5696;
+      transform: scale(0.64); /* Mengurangi ukuran keseluruhan 20% dari sebelumnya */
+    }
+
+    /*Wave Animation*/
+    ::selection{background-color: salmon; color: white;}
+    .parallax > use{
+      animation:move-forever 12s linear infinite;
+      &:nth-child(1){animation-delay:-2s;}
+      &:nth-child(2){animation-delay:-2s; animation-duration:5s}
+      &:nth-child(3){animation-delay:-4s; animation-duration:3s}
+    }
+
+    @keyframes move-forever{
+      0%{transform: translate(-90px , 0%)}
+      100%{transform: translate(85px , 0%)} 
+    }
+
+    .editorial {
+      display: block;
+      width: 100%;
+      height: 10em;
+      max-height: 100vh;
+      margin: 0;
+      position: absolute; 
+      bottom: 0;  
+    }
+
+
+
+    .ball {
+        width: 100px;
+        height: 100px;
+        margin-left: 180px;
+        background-color: #7E7BB9;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 0;  
+        animation: bounce 3s infinite alternate;
+    }
+
+    @keyframes bounce {
+        0% {
+            transform: translateY(0);
+        }
+        100% {
+            transform: translateY(-200px);
+        }
+    }
+
+    /*prevent many large-by-comparison ripples by shrinking the height*/
+    @media (max-width:50em){
+      .content h1{font-size: 12vmax}
+      .editorial{height:17vw;}
+    }
+
+
 
     .screen__content {
       z-index: 1;
