@@ -29,7 +29,7 @@ class Dashboard extends CI_Controller
         // Daftar metode yang diperbolehkan berdasarkan role
         $allowed_methods = [
             self::ROLE_ADMIN => ['index', 'tambah', 'pilih_kls','competition','myclass'],
-            self::ROLE_PIC_KELAS => ['index', 'tambah', 'pilih_kls','competition','class'],
+            self::ROLE_PIC_KELAS => ['index', 'tambah', 'pilih_kls','competition','myclass'],
         ];
 
         // Periksa apakah metode yang diakses sesuai dengan role
