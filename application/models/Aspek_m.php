@@ -26,4 +26,29 @@ class Aspek_m extends CI_Model
         $query = $this->db->get();
         return $query->row_array();
     }
+
+    public function get_data_by_month($month, $year)
+    {
+        $this->db->select('tb_aspek.*, tb_kelas.nama_kelas');
+        $this->db->from('tb_aspek');
+        $this->db->join('tb_kelas', 'tb_aspek.id_kelas = tb_kelas.id_kelas', 'left'); // Join ke tabel kelas
+        $this->db->where('MONTH(tb_aspek.create_at)', $month);
+        $this->db->where('YEAR(tb_aspek.create_at)', $year);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+    
+    public function parse_aspek_data($data)
+    {
+        $data['kerapihan_lab'] = array_map('intval', explode(',', $data['kerapihan_lab']));
+        $data['keamanan_lab'] = array_map('intval', explode(',', $data['keamanan_lab']));
+        $data['ketertiban_lab'] = array_map('intval', explode(',', $data['ketertiban_lab']));
+        $data['kebersihan_lab'] = intval($data['kebersihan_lab']);
+
+        $data['total_score'] = array_sum($data['kerapihan_lab']) +
+            array_sum($data['keamanan_lab']) +
+            array_sum($data['ketertiban_lab']) +
+            $data['kebersihan_lab'];
+        return $data;
+    }
 }
