@@ -37,7 +37,7 @@ class Kompetisi extends CI_Controller
         ];
 
         // Periksa apakah metode yang diakses sesuai dengan role
-         if (!in_array($method, $allowed_methods[$role])) {
+        if (!in_array($method, $allowed_methods[$role])) {
             $this->session->set_flashdata('error', 'You do not have permission to access this page.');
             redirect('no_permission');
         }
@@ -54,6 +54,7 @@ class Kompetisi extends CI_Controller
 
     public function kerapihan_lab()
     {
+        $data = $this->prepare_user_data('Dashboard 5K2S');
         $this->check_access();
         $id_kelas = $this->input->get('kelas');
 
@@ -66,12 +67,16 @@ class Kompetisi extends CI_Controller
             $kerapihan_lab_2 = $this->input->post('kerapihan_lab_2', true);
             $kerapihan_lab_3 = $this->input->post('kerapihan_lab_3', true);
 
-            if (isset($kerapihan_lab_1) && isset($kerapihan_lab_2) && isset($kerapihan_lab_3)) {
+            // Ambil id_user dari session
+            $id_user = $this->session->userdata('user_id');
+
+            if (isset($kerapihan_lab_1, $kerapihan_lab_2, $kerapihan_lab_3)) {
                 $kerapihan_lab_string = $kerapihan_lab_1 . ',' . $kerapihan_lab_2 . ',' . $kerapihan_lab_3;
 
                 $data_to_insert = array(
                     'kerapihan_lab' => $kerapihan_lab_string,
-                    'id_kelas' => $id_kelas
+                    'id_kelas' => $id_kelas,
+                    'id_user' => $id_user, // Tambahkan id_user ke data
                 );
 
                 $this->db->insert('tb_aspek', $data_to_insert);
@@ -85,21 +90,23 @@ class Kompetisi extends CI_Controller
             
             $data = $this->prepare_user_data('Kompetisi 5K2S');
             $data['id_kelas'] = $id_kelas;
-            $this->load->view("layout/header_dash",$data);
-            $this->load->view("layout/sidebar_admin",$data);
+            $this->load->view("layout/header_dash");
+            $this->load->view("layout/sidebar_admin", $data);
             $this->load->view("competition/kerapihan_lab", $data);
             $this->load->view("layout/footer_dash");
         }
     }
 
+
     public function keamanan_lab()
     {
+        $data = $this->prepare_user_data('Dashboard 5K2S');
         $this->check_access();
         $id_aspek = $this->session->userdata('id_aspek');
 
         if ($this->input->post()) {
-            $keamanan_lab_1 = $this->input->post('kemanan_lab_1', true);
-            $keamanan_lab_2 = $this->input->post('kemanan_lab_2', true);
+            $keamanan_lab_1 = $this->input->post('keamanan_lab_1', true);
+            $keamanan_lab_2 = $this->input->post('keamanan_lab_2', true);
 
             if (isset($keamanan_lab_1) && isset($keamanan_lab_2)) {
                 $keamanan_lab_string = $keamanan_lab_1 . ',' . $keamanan_lab_2;
@@ -126,16 +133,31 @@ class Kompetisi extends CI_Controller
 
     public function ketertiban_lab()
     {
+        $data = $this->prepare_user_data('Dashboard 5K2S');
         $this->check_access();
         $id_aspek = $this->session->userdata('id_aspek');
+        $role = $this->session->userdata('role');
 
         if ($this->input->post()) {
             $ketertiban_lab_1 = $this->input->post('ketertiban_lab_1', true);
             $ketertiban_lab_2 = $this->input->post('ketertiban_lab_2', true);
             $ketertiban_lab_3 = $this->input->post('ketertiban_lab_3', true);
 
-            if (isset($ketertiban_lab_1) && isset($ketertiban_lab_2) && isset($ketertiban_lab_3)) {
+            // Jika role adalah 1, ambil input untuk ketertiban_lab_4
+            if ($role == 1) {
+                $ketertiban_lab_4 = $this->input->post('ketertiban_lab_4', true);
+            } else {
+                $ketertiban_lab_4 = null;
+            }
+
+            // Periksa semua input yang diperlukan sudah ada
+            if (isset($ketertiban_lab_1, $ketertiban_lab_2, $ketertiban_lab_3)) {
                 $ketertiban_lab_string = $ketertiban_lab_1  . ',' . $ketertiban_lab_2  . ',' . $ketertiban_lab_3;
+
+                // Tambahkan nilai ketertiban_lab_4 jika ada
+                if ($ketertiban_lab_4 !== null) {
+                    $ketertiban_lab_string .= ',' . $ketertiban_lab_4;
+                }
 
                 $data_to_update = array(
                     'ketertiban_lab' => $ketertiban_lab_string
@@ -146,9 +168,9 @@ class Kompetisi extends CI_Controller
 
             redirect('competition/kebersihan_lab');
         } else {
-            $data = $this->prepare_user_data('Kompetisi 5K2S');
-            $this->load->view("layout/header_dash",$data);
-            $this->load->view("layout/sidebar_admin",$data);
+            $data['title'] = 'Kompetisi 5K2S';
+            $this->load->view("layout/header_dash");
+            $this->load->view("layout/sidebar_admin", $data);
             $this->load->view("competition/ketertiban_lab");
             $this->load->view("layout/footer_dash");
         }
@@ -156,6 +178,7 @@ class Kompetisi extends CI_Controller
 
     public function kebersihan_lab()
     {
+        $data = $this->prepare_user_data('Dashboard 5K2S');
         $this->check_access();
         $id_aspek = $this->session->userdata('id_aspek');
 
@@ -175,10 +198,9 @@ class Kompetisi extends CI_Controller
 
             redirect('competition');
         } else {
-            
-            $data = $this->prepare_user_data('Kompetisi 5K2S');
-            $this->load->view("layout/header_dash",$data);
-            $this->load->view("layout/sidebar_admin",$data);
+            $data['title'] = 'Kompetisi 5K2S';
+            $this->load->view("layout/header_dash");
+            $this->load->view("layout/sidebar_admin", $data);
             $this->load->view("competition/kebersihan_lab");
             $this->load->view("layout/footer_dash");
         }
@@ -186,19 +208,19 @@ class Kompetisi extends CI_Controller
 
     public function kerapihan_lab_edit($id_aspek)
     {
+        $data = $this->prepare_user_data('Dashboard 5K2S');
         $this->check_access();
-        $data = $this->prepare_user_data('Edit Kerapihan Lab');
+        $data['title'] = 'Edit Kerapihan Lab';
         $kerapihan_lab = $this->Aspek_m->get_kerapihan_lab_by_id($id_aspek);
 
         if ($kerapihan_lab) {
             $kerapihan_lab_value = $kerapihan_lab['kerapihan_lab'] ?? '0,0,0';
             $kerapihan_lab_array = explode(',', $kerapihan_lab_value);
 
-            $data['kerapihan_lab_1'] = $kerapihan_lab_array[0] ?? 0; // Properti Lab
+            $data['kerapihan_lab_1'] = $kerapihan_lab_array[0] ?? 0; 
             $data['kerapihan_lab_2'] = $kerapihan_lab_array[1] ?? 0; // Atribut
             $data['kerapihan_lab_3'] = $kerapihan_lab_array[2] ?? 0; // Rambut dan Seragam
         } else {
-            // Jika data tidak ditemukan, set semua nilai default ke 0
             $data['kerapihan_lab_1'] = 0;
             $data['kerapihan_lab_2'] = 0;
             $data['kerapihan_lab_3'] = 0;
@@ -206,8 +228,8 @@ class Kompetisi extends CI_Controller
 
         $data['id_aspek'] = $id_aspek;
 
-        $this->load->view("layout/header_dash",$data);
-        $this->load->view("layout/sidebar_admin",$data);
+        $this->load->view("layout/header_dash");
+        $this->load->view("layout/sidebar_admin", $data);
         $this->load->view("competition/kerapihan_lab_edit", $data);
         $this->load->view("layout/footer_dash");
     }
@@ -235,9 +257,9 @@ class Kompetisi extends CI_Controller
 
     public function keamanan_lab_edit($id_aspek)
     {
+        $data = $this->prepare_user_data('Dashboard 5K2S');
         $this->check_access();
-        
-        $data = $this->prepare_user_data('Edit keamanan Lab');
+        $data['title'] = 'Edit keamanan Lab';
         $keamanan_lab = $this->Aspek_m->get_kerapihan_lab_by_id($id_aspek);
 
         if ($keamanan_lab) {
@@ -253,8 +275,8 @@ class Kompetisi extends CI_Controller
 
         $data['id_aspek'] = $id_aspek;
 
-        $this->load->view("layout/header_dash",$data);
-        $this->load->view("layout/sidebar_admin",$data);
+        $this->load->view("layout/header_dash");
+        $this->load->view("layout/sidebar_admin", $data);
         $this->load->view("competition/keamanan_lab_edit", $data);
         $this->load->view("layout/footer_dash");
     }
@@ -279,43 +301,57 @@ class Kompetisi extends CI_Controller
 
     public function ketertiban_lab_edit($id_aspek)
     {
+        $data = $this->prepare_user_data('Dashboard 5K2S');
         $this->check_access();
-        
-        $data = $this->prepare_user_data('Edit keteriban Lab');
+        $data['title'] = 'Edit keteriban Lab';
         $ketertiban_lab = $this->Aspek_m->get_kerapihan_lab_by_id($id_aspek);
 
         if ($ketertiban_lab) {
-            $ketertiban_lab_value = $ketertiban_lab['ketertiban_lab'] ?? '0,0';
+            $ketertiban_lab_value = $ketertiban_lab['ketertiban_lab'] ?? '0,0,0';
             $ketertiban_lab_array = explode(',', $ketertiban_lab_value);
 
             $data['ketertiban_lab_1'] = $ketertiban_lab_array[0] ?? 0;
             $data['ketertiban_lab_2'] = $ketertiban_lab_array[1] ?? 0;
             $data['ketertiban_lab_3'] = $ketertiban_lab_array[2] ?? 0;
+            $data['ketertiban_lab_4'] = $ketertiban_lab_array[3] ?? 0; 
         } else {
             $data['ketertiban_lab_1'] = 0;
             $data['ketertiban_lab_2'] = 0;
             $data['ketertiban_lab_3'] = 0;
+            $data['ketertiban_lab_4'] = 0; 
         }
 
         $data['id_aspek'] = $id_aspek;
 
-        $this->load->view("layout/header_dash",$data);
-        $this->load->view("layout/sidebar_admin",$data);
+        $this->load->view("layout/header_dash");
+        $this->load->view("layout/sidebar_admin", $data);
         $this->load->view("competition/ketertiban_lab_edit", $data);
         $this->load->view("layout/footer_dash");
     }
 
+
     public function update_ketertiban_lab($id_aspek)
     {
-        $this->check_access();
+        // Ambil data role pengguna dari sesi
+        $role = $this->session->userdata('role');
+
+        // Ambil inputan dari form
         $ketertiban_lab_1 = $this->input->post('ketertiban_lab_1');
         $ketertiban_lab_2 = $this->input->post('ketertiban_lab_2');
         $ketertiban_lab_3 = $this->input->post('ketertiban_lab_3');
+        $ketertiban_lab_4 = $this->input->post('ketertiban_lab_4');
 
-        $ketertiban_lab_string = $ketertiban_lab_1 . ',' . $ketertiban_lab_2 . ',' . $ketertiban_lab_3;
+        // Pengkondisian berdasarkan role
+        if ($role == 1) {
+            $ketertiban_lab_string = $ketertiban_lab_1 . ',' . $ketertiban_lab_2 . ',' . $ketertiban_lab_3 . ',' . $ketertiban_lab_4;
+        } else {
+            $ketertiban_lab_string = $ketertiban_lab_1 . ',' . $ketertiban_lab_2 . ',' . $ketertiban_lab_3;
+        }
+
+        // Siapkan data untuk update
         $data = [
             'ketertiban_lab' => $ketertiban_lab_string,
-            'updated_at' => date('Y-m-d')
+            'updated_at' => date('Y-m-d') 
         ];
 
         $this->db->where('id_aspek', $id_aspek);
@@ -326,9 +362,9 @@ class Kompetisi extends CI_Controller
 
     public function kebersihan_lab_edit($id_aspek)
     {
+        $data = $this->prepare_user_data('Dashboard 5K2S');
         $this->check_access();
-        
-        $data = $this->prepare_user_data('Edit Kebersihan Lab');
+        $data['title'] = 'Edit Kebersihan Lab';
 
         $aspek = $this->Aspek_m->get_kerapihan_lab_by_id($id_aspek);
 
@@ -341,8 +377,8 @@ class Kompetisi extends CI_Controller
         $data['id_aspek'] = $id_aspek;
 
         // Load view
-        $this->load->view("layout/header_dash",$data);
-        $this->load->view("layout/sidebar_admin",$data);
+        $this->load->view("layout/header_dash");
+        $this->load->view("layout/sidebar_admin", $data);
         $this->load->view("competition/kebersihan_lab_edit", $data);
         $this->load->view("layout/footer_dash");
     }
