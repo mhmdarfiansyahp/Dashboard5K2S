@@ -71,6 +71,7 @@
 
   <script>
     const chartData = <?= json_encode($chartData) ?>;
+    const userClasses = <?= json_encode($userClasses) ?>;
 
     // Labels (Nama Kelas) dan Data
     const labels = chartData.map(item => item.nama_kelas);
@@ -80,34 +81,85 @@
     const averageValue = dataValues.reduce((a, b) => a + b, 0) / dataValues.length;
 
     // Warna batang
-    const barColors = dataValues.map(value => value >= averageValue ? 'rgba(54, 162, 235, 0.7)' : 'rgba(255, 99, 132, 0.7)');
+    const barColors = labels.map(label => {
+      // Jika label adalah kelas pengguna, beri warna khusus (misalnya hijau)
+      if (userClasses.includes(label)) {
+          return 'rgba(75, 192, 192, 0.7)'; // Warna khusus untuk kelas user
+      }
+      // Jika bukan kelas pengguna, beri warna abu-abu
+      return 'rgba(169, 169, 169, 0.7)'; // Warna abu-abu
+  });
+
+
+    // Plugin Custom untuk Garis Indikator
+    const indicatorLinePlugin = {
+        id: 'indicatorLine',
+        afterDatasetsDraw(chart) {
+            const ctx = chart.ctx;
+            const meta = chart.getDatasetMeta(0); // Dataset pertama
+            const dataset = chart.data.datasets[0]; // Data dari dataset pertama
+
+            meta.data.forEach((bar, index) => {
+                if (userClasses.includes(chart.data.labels[index])) {
+                    // Gambar garis horizontal di atas bar
+                    const barTopY = bar.y; // Posisi Y tertinggi dari bar
+                    const barXStart = bar.x - bar.width / 2; // Titik awal garis
+                    const barXEnd = bar.x + bar.width / 2; // Titik akhir garis
+
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(barXStart, barTopY); // Mulai garis dari titik awal
+                    ctx.lineTo(barXEnd, barTopY); // Gambar garis ke titik akhir
+                    ctx.lineWidth = 3; // Ketebalan garis
+                    ctx.strokeStyle = 'red'; // Warna garis merah
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            });
+        }
+    };
+
+    // Register Plugin
+    Chart.register(indicatorLinePlugin);
 
     // Inisialisasi Chart.js
     const ctx = document.getElementById('myChart').getContext('2d');
     new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Total Score',
-          data: dataValues,
-          backgroundColor: barColors,
-          borderColor: barColors.map(color => color.replace('0.7', '1')),
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Total Score',
+                data: dataValues,
+                backgroundColor: barColors,
+                borderColor: barColors.map(color => color.replace('0.7', '1')),
+                borderWidth: 1
+            }]
         },
-        plugins: {
-          legend: {
-            display: false
-          }
+        options: {
+            responsive: true,
+            animation: {
+                duration: 1000 // Durasi animasi normal
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                indicatorLine: {} // Aktifkan plugin
+            }
         }
-      }
     });
-  </script>
+
+    // Highlight elemen tertentu jika diperlukan
+    labels.forEach((label, index) => {
+        if (userClasses.includes(label)) {
+            console.log(`Added indicator for ${label} at position ${index}`);
+        }
+    });
+</script>
+

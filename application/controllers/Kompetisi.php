@@ -402,10 +402,30 @@ class Kompetisi extends CI_Controller
 
     private function prepare_user_data($title)
     {
+        // Ambil user_id dari session
+        $user_id = $this->session->userdata('user_id');
+    
+        // Cek apakah user_id ada di session
+        if (!$user_id) {
+            show_error('Anda harus login terlebih dahulu.', 403);
+        }
+    
+        // Load model kelas untuk mengambil data kelas
+        $this->load->model('Kelas_m');
+    
+        // Ambil data kelas berdasarkan user_id
+        $kelas_data = $this->Kelas_m->GetDataByUserId($user_id);
+    
+        // Pastikan data kelas tidak kosong
+        if (empty($kelas_data)) {
+            $kelas_data = [];
+        }
+    
         return [
             'title' => $title,
             'username' => $this->session->userdata('username'),
             'role' => $this->session->userdata('role'),
+            'kelas' => $kelas_data, // Tambahkan data kelas ke array
         ];
     }
 }

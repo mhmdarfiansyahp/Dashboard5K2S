@@ -56,7 +56,6 @@ $route['translate_uri_dashes'] = FALSE;
 $route['dashboard'] = 'Dashboard/index';
 
 $route['class'] = 'Dashboard/myclass';
-$route['competition'] = 'Dashboard/competition';
 
 $route['competition'] = 'Dashboard/competition';
 $route['competition/kerapihan_lab'] = 'Kompetisi/kerapihan_lab';

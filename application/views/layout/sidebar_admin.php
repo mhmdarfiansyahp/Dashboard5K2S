@@ -4,15 +4,28 @@
     <ul class="nav">
       <li class="nav-item nav-profile border-bottom">
         <a href="#" class="nav-link flex-column">
-          <div class="nav-profile-image">
-            <img src="<?= base_url('assets/images/faces/face1.jpg'); ?>" alt="profile" />
-            <!--change to offline or busy as needed-->
-          </div>
+         
           <div class="nav-profile-text d-flex ml-0 mb-3 flex-column">
               <!-- Menampilkan nama pengguna dari session -->
               <span class="font-weight-semibold mb-1 mt-2 text-center"><?php echo $username; ?></span>
               <!-- Menampilkan role pengguna dari session -->
-              <span class="text-secondary icon-sm text-center"><?php echo $role == 1 ? 'Admin' : 'Koordinator Kelas'; ?></span>
+              <span class="text-secondary icon-sm text-center">
+                <?php 
+                if ($role == 1) {
+                    echo 'Admin';
+                } else {
+                    // Ambil nama kelas langsung dari data['kelas'] jika ada
+                    if (!empty($kelas)) {
+                        // Ambil nama kelas pertama (sesuaikan jika user bisa memiliki lebih dari satu kelas)
+                        echo 'Koordinator Kelas ' . $kelas[0]->nama_kelas;
+                    } else {
+                        echo '(Belum Ada Kelas)';
+                    }
+                }
+                ?>
+            </span>
+
+            </span>
           </div>
         </a>
       </li>
