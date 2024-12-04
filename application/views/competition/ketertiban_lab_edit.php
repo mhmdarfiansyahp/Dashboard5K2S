@@ -100,6 +100,32 @@
 
                             </div>
 
+                            <!-- Rekap hasil P5M pengguna Lab -->
+                            <?php if ($role == 1): ?>
+                                <h6 class="mt-4">Rekap hasil P5M pengguna Lab </h6>
+                                <div class="d-flex flex-column">
+                                    <?php
+                                    // Opsi untuk rekap hasil P5M pengguna Lab
+                                    $options4 = [
+                                        5 => "90-100% hasil absensi P5M",
+                                        4 => "80-89% hasil absensi P5M",
+                                        3 => "70-79% hasil absensi P5M",
+                                        2 => "60-69% hasil absensi P5M",
+                                        1 => "50-59% hasil absensi P5M",
+                                        0 => "<50% hasil absensi P5M"
+                                    ];
+                                    foreach ($options4 as $value => $label) {
+                                        echo "<label class='d-flex align-items-center mb-3'>
+                                                <input type='radio' name='ketertiban_lab_4' value='$value' class='me-2' style='margin-right: 10px;' " . ($ketertiban_lab_4 == $value ? "checked" : "") . ">
+                                                [$value Point] $label
+                                            </label>";
+                                    }
+                                    ?>
+                                </div>
+                            <?php else: ?>
+                                <!-- Jika role bukan 1, bagian ini tidak akan muncul -->
+                            <?php endif; ?>
+
                             <div class="card-footer d-flex justify-content-between">
                                 <button class="btn btn-primary ms-auto">Selanjutnya</button>
                             </div>

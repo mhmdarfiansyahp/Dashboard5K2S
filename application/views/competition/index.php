@@ -71,7 +71,7 @@
                     </td>
                     <td class="text-center">
                       <?php
-                      foreach ($competisi as $kelas) {
+                      foreach ($competisi2 as $kelas) {
                         if ($cpm->id_kelas == $kelas->id_kelas) {
                           echo $kelas->nama_kelas;
                           break;

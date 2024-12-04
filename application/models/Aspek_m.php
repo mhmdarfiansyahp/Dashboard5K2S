@@ -7,7 +7,8 @@ class Aspek_m extends CI_Model
         return $this->db->get('tb_aspek');
     }
 
-    public function GetDataByKelasId($id_kelas){
+    public function GetDataByKelasId($id_kelas)
+    {
         $this->db->where('id_kelas', $id_kelas);
         $query = $this->db->get('tb_aspek');
         return $query->result();
@@ -33,17 +34,59 @@ class Aspek_m extends CI_Model
         return $query->row_array();
     }
 
-    public function get_data_by_month($month, $year)
+    public function get_user_classes($userId)
     {
-        $this->db->select('tb_aspek.*, tb_kelas.nama_kelas');
-        $this->db->from('tb_aspek');
-        $this->db->join('tb_kelas', 'tb_aspek.id_kelas = tb_kelas.id_kelas', 'left'); // Join ke tabel kelas
-        $this->db->where('MONTH(tb_aspek.create_at)', $month);
-        $this->db->where('YEAR(tb_aspek.create_at)', $year);
+        // Select the class names where the logged-in user is the coordinator
+        $this->db->select('nama_kelas');
+        $this->db->from('tb_kelas');
+        $this->db->where('id_user', $userId); // Link user to class via the id_user field
         $query = $this->db->get();
-        return $query->result_array();
+    
+        // Return an array of class names
+        return array_column($query->result_array(), 'nama_kelas');
     }
     
+
+    public function get_total_score_per_class($month, $year)
+    {
+        $this->db->select('k.nama_kelas, 
+                       GROUP_CONCAT(a.kerapihan_lab) AS kerapihan_lab, 
+                       GROUP_CONCAT(a.keamanan_lab) AS keamanan_lab, 
+                       GROUP_CONCAT(a.ketertiban_lab) AS ketertiban_lab, 
+                       SUM(CAST(a.kebersihan_lab AS SIGNED)) AS total_kebersihan');
+        $this->db->from('tb_aspek a');
+        $this->db->join('tb_kelas k', 'k.id_kelas = a.id_kelas');
+        $this->db->where('MONTH(a.create_at)', $month);
+        $this->db->where('YEAR(a.create_at)', $year);
+        $this->db->group_by('a.id_kelas');
+        $query = $this->db->get();
+
+        $rawData = $query->result_array();
+
+        $result = [];
+        foreach ($rawData as $row) {
+            $kerapihan = array_sum(array_map('intval', explode(',', $row['kerapihan_lab'])));
+            $keamanan = array_sum(array_map('intval', explode(',', $row['keamanan_lab'])));
+            $ketertiban = array_sum(array_map('intval', explode(',', $row['ketertiban_lab'])));
+            $kebersihan = $row['total_kebersihan'];
+
+            $totalScore = $kerapihan + $keamanan + $ketertiban + $kebersihan;
+
+            $result[] = [
+                'nama_kelas' => $row['nama_kelas'],
+                'total_score' => $totalScore,
+            ];
+        }
+
+        // Sort the result by total_score in descending order
+        usort($result, function ($a, $b) {
+            return $b['total_score'] - $a['total_score'];
+        });
+
+        return $result;
+    }
+
+
     public function parse_aspek_data($data)
     {
         $data['kerapihan_lab'] = array_map('intval', explode(',', $data['kerapihan_lab']));
@@ -56,5 +99,12 @@ class Aspek_m extends CI_Model
             array_sum($data['ketertiban_lab']) +
             $data['kebersihan_lab'];
         return $data;
+    }
+
+    public function GetDataByUserId($user_id)
+    {
+        $this->db->where('id_user', $user_id);  // Asumsikan ada kolom 'user_id' di tabel 'tb_kelas'
+        $query = $this->db->get('tb_aspek');
+        return $query->result(); // Mengembalikan hasil sebagai array
     }
 }
