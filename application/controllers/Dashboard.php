@@ -43,7 +43,6 @@ class Dashboard extends CI_Controller
     {
         $data = $this->prepare_user_data('Dashboard 5K2S'); 
         $this->check_access();
-        $data = $this->prepare_user_data('Dashboard 5K2S');
         $this->load->view("layout/header_dash", $data);
         $this->load->view("layout/sidebar_admin", $data);
         $this->load->view("dashboard/index", $data);
@@ -52,10 +51,11 @@ class Dashboard extends CI_Controller
 
     public function competition()
     {
+        
+        $data = $this->prepare_user_data('Dashboard 5K2S'); 
         $this->check_access();
         $data['competisi'] = $this->Kelas_m->Getalldata()->result();
         $data['aspek'] = $this->Aspek_m->Getalldata()->result();
-        // $data = $this->prepare_user_data('Competition 5K2S');
         $this->load->view("layout/header_dash", $data);
         $this->load->view("layout/sidebar_admin", $data);
         $this->load->view("competition/index",$data);
@@ -64,13 +64,69 @@ class Dashboard extends CI_Controller
 
     public function myclass()
     {
+        // Memeriksa akses pengguna
         $this->check_access();
-        $data = $this->prepare_user_data('Class 5K2S');
-        $this->load->view("layout/header_dash", $data);
-        $this->load->view("layout/sidebar_admin", $data);
-        $this->load->view("class/index", $data);
-        $this->load->view("layout/footer_dash");
+        $user_role = (int) $this->session->userdata('role');
+        
+        // Menyiapkan data untuk view
+        $data = $this->prepare_user_data('Kelas 5K2S'); 
+        
+        if ($user_role == 2) {
+            // Mengambil ID pengguna dari session
+            $user_id = (int) $this->session->userdata('user_id');
+            
+            // Memuat model
+            $this->load->model('Kelas_m');
+            $this->load->model('Aspek_m');
+            
+            // Ambil data kelas berdasarkan user_id
+            $kelas_data = $this->Kelas_m->GetDataByUserId($user_id);
+            
+            // Validasi apakah data kelas kosong
+            if (empty($kelas_data)) {
+                $kelas_data = [];
+            }
+            
+            // Iterasi setiap kelas untuk mendapatkan aspek
+            $kelas_with_aspek = [];
+            foreach ($kelas_data as $kelas) {
+                // Ambil aspek berdasarkan id kelas
+                $aspek_data = $this->Aspek_m->GetDataByKelasId($kelas->id_kelas);
+                
+                // Validasi apakah data aspek kosong
+                if (empty($aspek_data)) {
+                    $aspek_data = [];
+                }
+                
+                // Masukkan data kelas dan aspek ke dalam array
+                $kelas_with_aspek[] = [
+                    'kelas' => $kelas,
+                    'aspek' => $aspek_data,
+                ];
+            }
+            
+            // Siapkan data untuk view
+            $data['kelas_with_aspek'] = $kelas_with_aspek;
+            
+            // Memuat view dengan data
+            $this->load->view("layout/header_dash", $data);
+            $this->load->view("layout/sidebar_admin", $data);
+            $this->load->view("class/index", $data); 
+            $this->load->view("layout/footer_dash");
+        }
+        else
+        {
+            $this->load->model('Kelas_m'); 
+            $kelas['kelas'] = $this->Kelas_m->GetalldataArray();
+            
+            // Memuat view dengan data
+            $this->load->view("layout/header_dash", $data);
+            $this->load->view("layout/sidebar_admin", $data);
+            $this->load->view("class/index", $kelas);
+            $this->load->view("layout/footer_dash");
+        }
     }
+    
 
     private function prepare_user_data($title)
     {

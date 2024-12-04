@@ -57,6 +57,7 @@ $route['dashboard'] = 'Dashboard/index';
 
 $route['class'] = 'Dashboard/myclass';
 
+$route['competition'] = 'Dashboard/competition';
 $route['competition/kerapihan_lab'] = 'Kompetisi/kerapihan_lab';
 $route['competition/keamanan_lab'] = 'Kompetisi/keamanan_lab';
 $route['competition/ketertiban_lab'] = 'Kompetisi/ketertiban_lab';

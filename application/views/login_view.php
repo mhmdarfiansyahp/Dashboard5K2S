@@ -235,16 +235,34 @@
       margin-left: auto;
       color: #7875B5;
     }
+
+    #title-form {
+            color: #5C5696;
+            font-family: 'Poppins';
+            font-size: 104px; /* Menambahkan ukuran font jika diperlukan */
+            font-weight: 600; /* Menggunakan gaya bold */
+            margin-left: 20px;
+    }
+
+    #subtitle-form {
+            color: #5C5696;
+            font-family: 'Poppins';
+            font-size: 84px; /* Menambahkan ukuran font jika diperlukan */
+            font-weight: 600; /* Menggunakan gaya bold */
+            margin-left: 20px;
+            margin-top: -20px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    
     <div class="screen">
       <div class="screen__content">
         <form class="login" id="loginForm" action="<?= base_url('login/authenticate') ?>" method="POST">
           <div class="login__field">
             <i class="login__icon fas fa-user"></i>
-            <input type="text" name="username" id="username" class="login__input" placeholder="User name / Email">
+            <input type="text" name="username" id="username" class="login__input" placeholder="Username">
           </div>
           <div class="login__field">
             <i class="login__icon fas fa-lock"></i>
@@ -262,6 +280,32 @@
         <span class="screen__background__shape screen__background__shape2"></span>
         <span class="screen__background__shape screen__background__shape1"></span>
       </div>    
+    </div>
+
+    <div class="screen_white">
+    <div id="title-form">5K2S</div>
+    <div class="ball"></div>
+      <svg class="editorial"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 24 150 28"
+          preserveAspectRatio="none">
+      <defs>
+      <path id="gentle-wave"
+      d="M-160 44c30 0 
+          58-18 88-18s
+          58 18 88 18 
+          58-18 88-18 
+          58 18 88 18
+          v44h-352z" />
+        </defs>
+        <g class="parallax">
+        <use xlink:href="#gentle-wave" x="50" y="0" fill="#6A679E"/>
+        <use xlink:href="#gentle-wave" x="50" y="3" fill="#7E7BB9"/>
+        <use xlink:href="#gentle-wave" x="50" y="6" fill="#6C63AC"/>  
+        </g>
+      </svg>
+  
     </div>
   </div>
 
@@ -302,5 +346,6 @@
     }
 
   });
+  
 </script>
 </html>
