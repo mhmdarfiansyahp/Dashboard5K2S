@@ -109,51 +109,105 @@ class Dashboard extends CI_Controller
 
 
     public function myclass()
-    {
-        // Memeriksa akses pengguna
-        $this->check_access();
-        
-        $data = $this->prepare_user_data('Kelas 5K2S');
-        
-        $this->load->model('Kelas_m');
-        $this->load->model('Aspek_m');
+{
+    // Memeriksa akses pengguna
+    $this->check_access();
+    
+    // Menyiapkan data pengguna
+    $data = $this->prepare_user_data('Kelas 5K2S');
 
-        $user_id = (int) $this->session->userdata('user_id');
+    $this->load->model('Kelas_m');
+    $this->load->model('Aspek_m');
 
-        // Ambil data kelas berdasarkan user_id (untuk semua role)
-        $kelas_data = $this->Kelas_m->GetDataByUserId($user_id);
+    $user_id = (int) $this->session->userdata('user_id');
 
-        // Validasi apakah data kelas kosong
-        if (empty($kelas_data)) {
-            $kelas_data = [];
-        }
+    // Ambil data kelas yang dimiliki oleh pengguna
+    $user_kelas_data = $this->Kelas_m->GetDataByUserId($user_id);
 
-        $kelas_with_aspek = [];
-        foreach ($kelas_data as $kelas) {
-            $this->db->where('id_kelas', $kelas->id_kelas);
-            $aspek_data = $this->Aspek_m->getAlldata()->result_array();
+    // Ambil semua data kelas
+    $all_kelas_data = $this->Kelas_m->getAllKelas();
 
-            usort($aspek_data, function ($a, $b) {
-                return strtotime($a['updated_at']) - strtotime($b['updated_at']);
-            });
-
-            $kelas_with_aspek[] = [
-                'kelas' => $kelas, // Pastikan nama kelas tersedia di sini
-                'aspek' => $aspek_data,
-            ];
-        }
-
-        // Siapkan data untuk view
-        $data['kelas_with_aspek'] = $kelas_with_aspek;
-        $data['user_role'] = (int) $this->session->userdata('role'); 
-
-        // Memuat view dengan data
-        $this->load->view("layout/header_dash", $data);
-        $this->load->view("layout/sidebar_admin", $data);
-        $this->load->view("class/index", $data);
-        $this->load->view("layout/footer_dash");
+    // Validasi apakah data kelas pengguna kosong
+    if (empty($user_kelas_data)) {
+        $user_kelas_data = [];
     }
 
+    $grouped_data = [];
+
+    // Proses semua data kelas untuk menghitung peringkat global
+    foreach ($all_kelas_data as $kelas) {
+        $this->db->where('id_kelas', $kelas->id_kelas);
+        $aspek_data = $this->Aspek_m->getAlldata()->result_array();
+
+        foreach ($aspek_data as $cpm) {
+            $tanggal_update = strtotime($cpm['create_at']);
+            $bulan = date('F', $tanggal_update);
+            $tahun = date('Y', $tanggal_update);
+            $key = $kelas->id_kelas . '-' . $bulan . '-' . $tahun;
+
+            if (isset($grouped_data[$key])) {
+                $grouped_data[$key]['kerapihan_lab'] += array_sum(explode(',', $cpm['kerapihan_lab']));
+                $grouped_data[$key]['keamanan_lab'] += array_sum(explode(',', $cpm['keamanan_lab']));
+                $grouped_data[$key]['ketertiban_lab'] += array_sum(explode(',', $cpm['ketertiban_lab']));
+                $grouped_data[$key]['kebersihan_lab'] += $cpm['kebersihan_lab'];
+                $grouped_data[$key]['total'] += array_sum(explode(',', $cpm['kerapihan_lab'])) +
+                                                array_sum(explode(',', $cpm['keamanan_lab'])) +
+                                                array_sum(explode(',', $cpm['ketertiban_lab'])) +
+                                                $cpm['kebersihan_lab'];
+            } else {
+                $grouped_data[$key] = [
+                    'id_kelas' => $kelas->id_kelas,
+                    'kelas_nama' => $kelas->nama_kelas,
+                    'bulan' => $bulan,
+                    'tahun' => $tahun,
+                    'kerapihan_lab' => array_sum(explode(',', $cpm['kerapihan_lab'])),
+                    'keamanan_lab' => array_sum(explode(',', $cpm['keamanan_lab'])),
+                    'ketertiban_lab' => array_sum(explode(',', $cpm['ketertiban_lab'])),
+                    'kebersihan_lab' => $cpm['kebersihan_lab'],
+                    'total' => array_sum(explode(',', $cpm['kerapihan_lab'])) +
+                              array_sum(explode(',', $cpm['keamanan_lab'])) +
+                              array_sum(explode(',', $cpm['ketertiban_lab'])) +
+                              $cpm['kebersihan_lab']
+                ];
+            }
+        }
+    }
+
+    // Mengurutkan data berdasarkan total secara menurun
+    usort($grouped_data, function ($a, $b) {
+        return $b['total'] <=> $a['total'];
+    });
+
+    // Menambahkan peringkat global
+    $rank = 1;
+    foreach ($grouped_data as &$item) {
+        $item['peringkat'] = $rank++;
+    }
+
+    // Filter data untuk hanya menampilkan kelas milik user
+    $filtered_data = array_filter($grouped_data, function ($item) use ($user_kelas_data) {
+        foreach ($user_kelas_data as $user_kelas) {
+            if ($item['id_kelas'] == $user_kelas->id_kelas) {
+                return true;
+            }
+        }
+        return false;
+    });
+
+    // Konversi ke array numerik untuk view
+    $data['kelas_with_aspek'] = array_values($filtered_data);
+
+    $data['user_role'] = (int) $this->session->userdata('role');
+    $data['kelas_data'] = $user_kelas_data;
+
+    // Memuat view dengan data
+    $this->load->view("layout/header_dash", $data);
+    $this->load->view("layout/sidebar_admin", $data);
+    $this->load->view("class/index", $data);
+    $this->load->view("layout/footer_dash");
+}
+
+    
 
     private function prepare_user_data($title)
     {

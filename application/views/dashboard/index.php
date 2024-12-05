@@ -4,7 +4,7 @@
     <div class="page-header flex-wrap">
       <div class="header-right d-flex flex-wrap mt-2 mt-sm-0">
         <div class="d-flex align-items-center">
-          <a href="#">
+          <a href="<?php echo base_url('dashboard'); ?>">
             <p class="m-0 pr-3">Dashboard</p>
           </a>
           <a class="pl-3 mr-4" href="#">

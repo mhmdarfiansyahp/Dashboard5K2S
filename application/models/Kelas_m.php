@@ -21,6 +21,15 @@ class Kelas_m extends CI_Model
         return $query->result(); // Mengembalikan hasil sebagai array
     }
 
+    public function getAllKelas() {
+        // Mengambil data seluruh kelas dari tabel kelas
+        $this->db->select('*'); // Memilih semua kolom
+        $this->db->from('tb_kelas'); // Ganti dengan nama tabel kelas Anda
+        $query = $this->db->get();
+        
+        return $query->result(); // Mengembalikan hasil query sebagai array objek
+    }
+
 
     // Fungsi untuk mengambil kelas yang belum dimasukkan oleh pengguna
     public function GetAvailableClassesForUser($user_id)

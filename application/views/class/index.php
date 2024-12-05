@@ -3,7 +3,7 @@
     <div class="page-header flex-wrap">
       <div class="header-right d-flex flex-wrap mt-2 mt-sm-0">
         <div class="d-flex align-items-center">
-          <a href="#">
+          <a href="<?php echo base_url('class'); ?>">
             <p class="m-0 pr-3">Kelas Saya</p>
           </a>
           <a class="pl-3 mr-4" href="#">
@@ -19,7 +19,7 @@
         <div class="col-xl-12 stretch-card grid-margin">
           <div class="card">
             <div class="card-header">
-              <h4 class="card-title">History Penilaian Kelas <?php echo $item['kelas']->nama_kelas; ?></h4>
+              <h4 class="card-title">History Penilaian Kelas <?php echo $item['kelas_nama']; ?></h4> <!-- Mengakses kelas_nama -->
             </div>
             <div class="card-body">
               <table class="table table-bootstrap">
@@ -37,29 +37,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <?php
-                  $no = 1;
-                  foreach ($item['aspek'] as $cpm):
-                    $tanggal_update = strtotime($cpm['create_at']);
-                    $bulan = date('F', $tanggal_update);
-                    $tahun = date('Y', $tanggal_update);
-                    $total = array_sum(explode(',', $cpm['kerapihan_lab'])) +
-                      array_sum(explode(',', $cpm['keamanan_lab'])) +
-                      array_sum(explode(',', $cpm['ketertiban_lab'])) +
-                      $cpm['kebersihan_lab'];
-                  ?>
+                  <?php $no = 1; ?>
+                  <?php foreach ($kelas_with_aspek as $item): ?>
                     <tr>
                       <td class="text-center"><?php echo $no++; ?></td>
-                      <td class="text-center"><?php echo $bulan; ?></td>
-                      <td class="text-center"><?php echo $tahun; ?></td>
-                      <td class="text-center"><?php echo array_sum(explode(',', $cpm['kerapihan_lab'])); ?></td>
-                      <td class="text-center"><?php echo array_sum(explode(',', $cpm['keamanan_lab'])); ?></td>
-                      <td class="text-center"><?php echo array_sum(explode(',', $cpm['ketertiban_lab'])); ?></td>
-                      <td class="text-center"><?php echo $cpm['kebersihan_lab']; ?></td>
-                      <td class="text-center"><?php echo $total; ?></td>
-                      <td>
-                         
-                      </td>
+                      <td class="text-center"><?php echo $item['bulan']; ?></td>
+                      <td class="text-center"><?php echo $item['tahun']; ?></td>
+                      <td class="text-center"><?php echo $item['kerapihan_lab']; ?></td>
+                      <td class="text-center"><?php echo $item['keamanan_lab']; ?></td>
+                      <td class="text-center"><?php echo $item['ketertiban_lab']; ?></td>
+                      <td class="text-center"><?php echo $item['kebersihan_lab']; ?></td>
+                      <td class="text-center"><?php echo $item['total']; ?></td>
+                      <td class="text-center"><?php echo $item['peringkat']; ?></td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
